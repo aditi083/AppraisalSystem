@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/styles/register.css">
+    
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <title>Registration</title>
+</head>
+<body>
+     <div class="container">
+        <header>Registration</header>
+
+        <form action="/signup" method="post">
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Personal Details</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Full name</label>
+                            <input type="text" placeholder="Enter your name" name="name" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Employee Code</label>
+                            <input type="text" placeholder="Enter your employee code" name="employeeCode" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Department</label>
+                            <input type="text" placeholder="Enter your department" name="department" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Designation</label>
+                            <input type="text" placeholder="Enter your designation" name="designation" required>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Period of evaluation</label>
+                            <input type="text" placeholder="Enter period of evaluation" name="periodOfEvaluation" required>
+                        </div>
+                        <div class="input-field">
+                            <label>User type</label>
+                            <select name="userType" class="option-list" name="userType"  required>
+                                <option value="">Select Option</option>
+                                <option value="1" required>Admin</option>
+                                <option value="2" required>RO</option>
+                                <option value="3" required>Faculty</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details signup">
+                    <span class="title">SignUp Details</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>User name</label>
+                            <input type="text" placeholder="Enter your user-name"name="username" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Password</label>
+                            <input type="text" placeholder="Enter your password" name="password" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="nextBtn">
+                    <span class="btnText">Sign Up</span>
+                </button>
+            </div>
+        </form>        
+     </div>
+       
+</body>
+</html>

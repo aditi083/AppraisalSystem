@@ -1,0 +1,376 @@
+ /* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  min-height: 100vh;
+  background: #eef5fe;
+  overflow-x: hidden;
+}
+/* Pre css */
+.flex {
+  display: flex;
+  align-items: center;
+}
+.nav_image {
+  display: flex;
+  min-width: 55px;
+  justify-content: center;
+}
+.nav_image img {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 270px;
+  background: #fff;
+  padding: 15px 10px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+.logo_items {
+  gap: 8px;
+}
+.logo_name {
+  font-size: 22px;
+  color: #333;
+  font-weight: 500px;
+  transition: all 0.3s ease;
+}
+.menu_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 40px;
+  overflow-y: auto;
+  height: calc(100% - 82px);
+}
+.menu_container::-webkit-scrollbar {
+  display: none;
+}
+.item {
+  list-style: none;
+}
+.link {
+  text-decoration: none;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #707070;
+}
+.link:hover {
+  color: #fff;
+  background-color: #4070f4;
+}
+.link span {
+  white-space: nowrap;
+  margin-left: 5px;
+  padding: 12px 0;
+}
+.sidebar_profile {
+  display: flex;
+  flex-direction: column;
+  padding-top: 15px;
+  margin-top: 15px;
+  gap: 15px;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+.user-details{
+  display: flex;
+  justify-content: center;
+  margin-left: 10px;
+}
+.user-logout{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin: 10px;
+}
+.user-logout a{
+  font-size: 20px;
+  margin-left: 10px;
+  color: #333;
+  text-decoration: none;
+}
+.sidebar_profile .name {
+  font-size: 18px;
+  color: #333;
+}
+.sidebar_profile .email {
+  font-size: 15px;
+  color: #333;
+}
+
+.sidebar.sidebar-hidden {
+  display: none; 
+}
+
+.sidebar-hidden {
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.link .icon {
+  height: 50px;
+  min-width: 55px;
+  display: flex;
+  font-size: 15px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  display: none;
+}
+
+.link span {
+  white-space: normal;
+  margin-left: 10px; 
+}
+
+/* Responsive */
+@media screen and (max-width: 1100px) {
+  .navbar {
+    left: 65%;
+  }
+}
+@media screen and (max-width: 800px) {
+  .sidebar {
+    left: 0;
+    z-index: 1000;
+  }
+  .sidebar.close {
+    left: -100%;
+  }
+  #sidebar-close {
+    display: block;
+  }
+  #lock-icon {
+    display: none;
+  }
+  .navbar {
+    left: 0;
+    max-width: 100%;
+    transform: translateX(0%);
+  }
+  #sidebar-open {
+    display: block;
+  }
+}
+
+
+/*Buckets*/
+.buckets {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 15px 0; 
+  padding: 10px; 
+  transform: translateX(270px);
+  position: relative; 
+  margin-right: 270px; 
+  transition: all 0.2s ease; 
+}
+.bucket-item {
+  width: calc(33.33% - 20px);
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px; 
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bucket-item:hover {
+  transform: scale(1.05); 
+}
+.buckets.sidebar-hidden {
+  transform: translateX(100px);
+  transition: all 0.2s ease; 
+}
+
+/* Form */
+.form-container{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  transform: translate(40%, 4%);
+}
+
+.form-container.sidebar-hidden{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  transform: translate(30%, 4%);
+}
+
+label{
+  display: block;
+  color: black;
+  margin-left: 0;
+}
+
+.percentage{
+  font-size: 1rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+input,select{
+  margin-top:10px;
+  margin-bottom:20px;
+  padding: 5px;
+  box-shadow: 0 0 4px #007bff;
+  border-color: #007bff;
+  width: 400px;
+}
+
+button{
+  background-color: #4a849c;
+  padding: 8px;
+  border-radius: 8px;
+  color: black;
+  font-size: 1rem;
+  margin: 10px;
+}
+
+button:hover{
+  cursor: pointer;
+}
+
+nav .navbar{
+  background-color: #fff;
+  height: 80px;
+  width: 100vw; 
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.nav-items{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.bar-icon{
+  display: flex;
+  align-items: center;
+  margin-left: 290px;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.bar-icon.sidebar-hidden{
+  margin-left: 20px;
+}
+
+.navbar .profile-img img{
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.profile-img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-dropdown{
+  z-index: 1;
+}
+
+.home, .profile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 30px;
+  font-size: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+.sub-menu-wrap {
+  position: absolute;
+  top: 80px;
+  right: 1%;
+  width: 320px;
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.5s;
+}
+
+.sub-menu-wrap.open-menu {
+  max-height: 400px;
+  z-index: 1;
+}
+
+.sub-menu {
+  background: #fff;
+  padding: 20px;
+  margin: 10px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+.user-info h3 {
+  font-weight: 500;
+}
+.user-info img {
+  width: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.sub-menu hr {
+  border: 0;
+  height: 1px;
+  width: 100%;
+  background: #ccc;
+  margin: 15px 0 10px;
+}
+
+.sub-menu-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #525252;
+  margin: 12px 0;
+}
+
+.sub-menu-link p {
+  width: 100%;
+}
+
+.sub-menu-link img {
+  width: 40px;
+  background: #e5e5e5;
+  border-radius: 50%;
+  padding: 8px;
+  margin-right: 15px;
+}
+
+.sub-menu-link span {
+  font-size: 22px;
+  transition: transform 0.5s;
+}
+.sub-menu-link:hover span {
+  transform: translateX(5px);
+}
+
+.sub-menu-link:hover p {
+  font-weight: 600;
+}
+
+
