@@ -196,6 +196,10 @@ app.get("/signup", (req, res) => {
 //   res.render("studBucket1", {name: req.user.name, email: req.user.username});
 // });
 
+app.get("/index", (req, res) => {
+  res.render("index",  {name: req.user.name, email: req.user.username});
+})
+
 app.get("/studBucket1", async (req, res) => {
   try {
     const userDocument = await studBucket.findOne({ name: req.user.username });
@@ -265,7 +269,7 @@ app.post("/signin", function(req, res){
       console.log(err);
     } else {
       passport.authenticate("local")(req, res, function(){
-        res.render("studBucket1", {name: req.user.name, email: req.user.username});
+        res.render("index", {name: req.user.name, email: req.user.username});
       });
     }
   });

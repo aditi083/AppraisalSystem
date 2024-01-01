@@ -1,0 +1,134 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.wrapper{
+    font-family: 'poppins',sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #eef5fe;
+    margin-bottom: 100px;
+    transform: translateX(150px);
+}
+
+.wrapper.sidebar-hidden {
+    transform: translateX(-150px);
+    transition: all 0.2s ease; 
+  }
+
+
+.content-box{
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    justify-content: space-around;
+    z-index: -1;
+}
+.card{
+    min-height: 100px;
+    width: 320px;
+    padding: 40px;
+    padding-bottom: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #fff;
+    margin: 20px 4px;
+    box-shadow: 0px 15px 30px rgba(0,0,0,0.2);
+    cursor: pointer;
+
+}
+.card i{
+    margin: 20px;
+    color: #581ed6;
+}
+.card h2{
+    margin-bottom: 12px;
+    font-weight: 400;
+    text-align: center;
+}
+.card a{
+    text-decoration: none;
+    color: black;
+}
+.card p{
+    color: #6c757d;
+    text-align: center;
+}
+.card:hover i,
+.card:hover p{
+    color: #fff;
+}
+.card:hover h2{
+    font-weight: 600;
+}
+.card:nth-child(1):hover{
+    background: linear-gradient(45deg,
+                                   rgba(88, 70, 159, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ,
+                                    url('/images/p1.jpg');
+                                    background-size: cover;
+}
+.card:nth-child(2):hover{
+    background: linear-gradient(45deg,
+                                   rgba(88, 70, 159, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ,
+                                    url('/images/p2.jpg');
+                                    background-size: cover;
+}
+.card:nth-child(3):hover{
+    background: linear-gradient(45deg,
+                                   rgba(88, 70, 159, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ,
+                                    url('/images/p3.jpg');
+                                    background-size: cover;
+}
+.card:nth-child(4):hover{
+    background: linear-gradient(45deg,
+                                   rgba(88, 70, 159, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ,
+                                    url('/images/p4.jpg');
+                                    background-size: cover;
+}
+.card:nth-child(5):hover{
+    background: linear-gradient(45deg,
+                                   rgba(88, 70, 159, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ,
+                                    url('/images/p5.jpg');
+                                    background-size: cover;
+}
+.card:nth-child(6):hover{
+    background: linear-gradient(45deg,
+                                   rgba(88, 70, 159, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ,
+                                    url('/images/p6.jpg');
+                                    background-size: cover;
+}
+@media(max-width:991px){
+    .wrapper{
+        padding: 25px;
+    }
+    .wrapper h1{
+        font-size: 2.5em;
+        font-weight: 600;
+    }
+    .content-box{
+        flex-direction: column;
+        width: 100%;
+    }
+    .card{
+        min-width: 300px;
+        margin: 10px auto;
+    }
+}
