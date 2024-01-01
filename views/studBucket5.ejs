@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -23,7 +22,7 @@
         <div class="menu_items">
           <ul class="menu_item">
             <li class="item">
-              <a href="/studBucket1" class="link flex">
+              <a href="studBucket1" class="link flex">
                 <!-- <span class="icon">SD-1</span> -->
                 <span><strong style="color: black;">SD1</strong> -Average student attendance (during PA evaluation period)</span>
               </a>
@@ -61,10 +60,8 @@
               <img src="images/profile.jpg" alt="logo_img" />
             </span>
             <div class="data_text">
-              <% if(locals){%>
-                <span class="name"><%= name %></span>
-              <span class="email"><%= email %></span>
-              <% } %>
+                <span class="name">David</span>
+              <span class="email">david@gmail.com</span>
             </div>
           </div>
           <div class="user-logout">
@@ -91,9 +88,7 @@
           <div class="sub-menu">
             <div class="user-info">
               <img src="images/user.png">
-              <% if(locals){%>
-                <h3><%= name %></h3>
-                <% } %>
+              <h3>Aditi Ganji</h3>
             </div>
             <hr>
             <a href="profile" class="sub-menu-link">
@@ -129,20 +124,39 @@
     </div>
 
     <div class="form-container">
-      <form action="/save2" class="form" method="post">
-        <div class="criteria">
-          <label for="course-name">Course Name</label>
-          <input type="text" placeholder="Enter Course Name" name="courseName">
+      <form action="/" class="form">
+        <div class="criteria"><p>No. of Meetings</p>
+            <select name="selectedOption1" class="option-list" id="select1" required>
+                <option value="">Select Option</option>
+                <option value="1" required>3 meetings or more</option>
+                <option value="2" required>2 meetings</option>
+                <option value="3" required>Less than 2 meetings</option>
+            </select>
         </div>
-    
-        <div class="criteria">
-          <label for="course-result">Course Result % (only write no, without %)</label>
-          <input type="number" placeholder="Enter Result %" name="courseResult">
+        <div class="criteria"><p>Awards won by mentee under guidance of Mentor</p>
+            <select name="selectedOption2" class="option-list" id="select2" required>
+                <option value="">Select Option</option>
+                <option value="1" required>Yes</option>
+                <option value="2" required>No</option>
+            </select>
+        </div>
+        <div class="criteria"><p>Professional and Personal Development of Mentee:</p>
+          
+        </div>
+        <div class="criteria"><p>Feedback from Final Year student (based on 3 years of Mentoring)</p>
+            <select name="selectedOption4" class="option-list" id="select4" required>
+                <option value="">Select option</option>
+                <option value="1" required>More than 3.5</option>
+                <option value="2" required>3 to 3.5</option>
+                <option value="3" required>2.5 to 3</option>
+                <option value="4" required>Below 2.5</option>
+            </select>
         </div>
      
         <div class="button"><button class="saveButton">Save</button></div>
       </form>
     </div>
+          
      
   </div>
 

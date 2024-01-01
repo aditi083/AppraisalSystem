@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -23,7 +22,7 @@
         <div class="menu_items">
           <ul class="menu_item">
             <li class="item">
-              <a href="/studBucket1" class="link flex">
+              <a href="studBucket1" class="link flex">
                 <!-- <span class="icon">SD-1</span> -->
                 <span><strong style="color: black;">SD1</strong> -Average student attendance (during PA evaluation period)</span>
               </a>
@@ -61,11 +60,11 @@
               <img src="images/profile.jpg" alt="logo_img" />
             </span>
             <div class="data_text">
-              <% if(locals){%>
+              <% if(locals){ %>
                 <span class="name"><%= name %></span>
               <span class="email"><%= email %></span>
-              <% } %>
             </div>
+            <% } %>
           </div>
           <div class="user-logout">
             <i class="fa-solid fa-right-from-bracket fa-2x"></i>
@@ -91,9 +90,7 @@
           <div class="sub-menu">
             <div class="user-info">
               <img src="images/user.png">
-              <% if(locals){%>
-                <h3><%= name %></h3>
-                <% } %>
+              <h3>Aditi Ganji</h3>
             </div>
             <hr>
             <a href="profile" class="sub-menu-link">
@@ -129,20 +126,26 @@
     </div>
 
     <div class="form-container">
-      <form action="/save2" class="form" method="post">
+      <form action="/save4" class="form" method="post">
         <div class="criteria">
           <label for="course-name">Course Name</label>
           <input type="text" placeholder="Enter Course Name" name="courseName">
         </div>
     
         <div class="criteria">
-          <label for="course-result">Course Result % (only write no, without %)</label>
-          <input type="number" placeholder="Enter Result %" name="courseResult">
+            <label for="course-attendance">Feedback (between 0 to 4)</label>
+            <input type="number" placeholder="Enter feedback" name="studentFeedBack">
+          </div>
+    
+        <div class="criteria">
+          <label for="course-attendance">Course Attendance % (only write no, without %)</label>
+          <input type="number" placeholder="Enter Attendance %" name="courseAttendance">
         </div>
      
         <div class="button"><button class="saveButton">Save</button></div>
       </form>
     </div>
+          
      
   </div>
 
@@ -166,6 +169,4 @@
   </script>
   </body>
 </html>
-
-
 
