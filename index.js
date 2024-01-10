@@ -56,16 +56,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  userType: {
-    type: String,
-    required: true
-  },
   username: {
     type: String,
     required: true
   },
   password: {
     type: String,
+  },
+  role: {
+    type: String,
+    enum: ['admin', 'ro', 'faculty'],
     required: true
   }
 });
@@ -85,6 +85,9 @@ const studentDevelopmentSchema = new mongoose.Schema({
       subTotal1: {
         type: Number,
         required: true
+      },
+      reviewerScore: {
+        type: Number
       }
   }],
   sd2: [{
@@ -97,6 +100,9 @@ const studentDevelopmentSchema = new mongoose.Schema({
     subTotal2: {
       type: Number,
       required: true
+    },
+    reviewerScore: {
+      type: Number
     }
   }],
   sd3: [{
@@ -124,6 +130,9 @@ const studentDevelopmentSchema = new mongoose.Schema({
     subTotal3: {
       type:Number,
       required: true
+    },
+    reviewerScore: {
+      type: Number
     }
   }],
   sd4: [{
@@ -139,6 +148,9 @@ const studentDevelopmentSchema = new mongoose.Schema({
     subTotal4: {
       type: Number,
       required: true
+    },
+    reviewerScore: {
+      type: Number
     }
   }],
   sd5: [{
@@ -153,11 +165,11 @@ const studentDevelopmentSchema = new mongoose.Schema({
     },
     feedBack: {
       type: Number
+    },
+    reviewerScore: {
+      type: Number
     }
   }],
-  totalMarks: {
-    type: Number
-  }
 });
 
 
@@ -192,10 +204,6 @@ app.get("/signup", (req, res) => {
   res.render("register");
 });
 
-// app.get("/studBucket1", (req, res) => {
-//   res.render("studBucket1", {name: req.user.name, email: req.user.username});
-// });
-
 app.get("/index", (req, res) => {
   res.render("index",  {name: req.user.name, email: req.user.username});
 })
@@ -203,19 +211,18 @@ app.get("/index", (req, res) => {
 app.get("/studBucket1", async (req, res) => {
   try {
     const userDocument = await studBucket.findOne({ name: req.user.username });
-    if (userDocument) {
-      const subtotal1 = userDocument.sd1[0].subTotal1; // Adjust this according to your data structure
-      const percentage = (subtotal1 * 100)/2000; 
-      res.render("studBucket1", { name: req.user.name, email: req.user.username, percentage: percentage });
+
+    if (userDocument && userDocument.sd1 && userDocument.sd1.length > 0) {
+      const sd1Data = userDocument.sd1[0];
+      res.render("studBucket1", { user: req.user, sd1Data, name: req.user.name, email: req.user.email });
     } else {
-      res.render("studBucket1", { name: req.user.name, email: req.user.username, percentage: 0});
+      res.render("studBucket1", { user: req.user, sd1Data: null, name: req.user.name, email: req.user.email });
     }
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
 });
-
 
 app.get("/studBucket2", (req, res) => {
   res.render("studBucket2", {name: req.user.name, email: req.user.username})
@@ -233,6 +240,109 @@ app.get("/studBucket5", (req, res) => {
   res.render("studBucket5");
 });
 
+function checkRole(role) {
+  return (req, res, next) => {
+    if (req.isAuthenticated() && req.user.role === role) {
+      return next();
+    }
+    res.redirect("/"); 
+  };
+}
+
+app.get("/approve", checkRole('ro'), async (req, res) => {
+  try {
+    if (req.isAuthenticated() && req.user.role === 'ro') {
+      const roDepartment = req.user.department;
+
+      // Fetch faculty members of the same department
+      const facultyMembers = await User.find({ role: 'faculty', department: roDepartment });
+
+      res.render("approve", { facultyMembers, name: req.user.name, email: req.user.username });
+    } else {
+      res.redirect("/");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get("/approve/submittedForms/:name", async (req, res) => {
+  try {
+    // Retrieve the username from the request parameters
+    const { name } = req.params;
+
+    // Fetch the user or faculty based on the username from the database
+    const user = await studBucket.findOne({ name });
+
+    if (user) {
+      // Render a template or send data related to the user's submitted forms
+      res.render('submittedForms', { user });
+    } else {
+      // If the user is not found, handle accordingly (e.g., show an error message)
+      res.status(404).send('No details found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// POST method for handling Ro scores
+app.post("/approve/submittedForms/:name/save", async (req, res) => {
+  try {
+    const { name } = req.params;
+    const i = req.body.index; // Access the dynamically generated i value
+
+    const reviewerScoreValue = parseFloat(req.body[`sd1_reviewerScore_${i}`]);
+
+    if (isNaN(reviewerScoreValue)) {
+      return res.status(400).send('Invalid reviewer score value');
+    }
+
+    // Update the document with the new reviewerScore value
+    const updateResult = await studBucket.updateOne(
+      { name },
+      {
+        $set: {
+          [`sd1.${i}.reviewerScore`]: reviewerScoreValue
+        }
+      }
+    );
+
+    return res.status(200).redirect(`/approve/submittedForms/${name}`);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+
+app.get("/ro-home", checkRole('ro'), (req, res) => {
+  res.render("ro-home", { name: req.user.name, email: req.user.username });
+});
+
+app.get("/approve", async (req, res) => {
+  try {
+    if (req.isAuthenticated() && req.user.role === 'ro') {
+      const roDepartment = req.user.department;
+
+      const facultyMembers = await User.find({ role: 'faculty', department: roDepartment });
+
+      res.render("approve", { facultyMembers, name: req.user.name, email: req.user.username });
+    } else {
+      res.redirect("/");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
 app.post("/signup", (req, res) => {
   const newUser = new User({
     username: req.body.username,
@@ -241,8 +351,7 @@ app.post("/signup", (req, res) => {
     department: req.body.department,
     designation: req.body.designation,
     periodOfEvaluation: req.body.periodOfEvaluation,
-    userType: req.body.userType,
-    password: req.body.password
+    role: req.body.userType === '1' ? 'admin' : req.body.userType === '2' ? 'ro' : 'faculty',
   });
 
   User.register(newUser, req.body.password, function (err, user) {
@@ -268,8 +377,11 @@ app.post("/signin", function(req, res){
     if (err) {
       console.log(err);
     } else {
-      passport.authenticate("local")(req, res, function(){
-        res.render("index", {name: req.user.name, email: req.user.username});
+      passport.authenticate("local")(req, res, function() {
+        const redirectUrl = req.user.role === 'admin' ? '/index' :
+                            req.user.role === 'ro' ? '/ro-home' :
+                            '/index';
+        res.redirect(redirectUrl);
       });
     }
   });
@@ -279,54 +391,65 @@ app.post("/signin", function(req, res){
 let totalMarks = 0;
 
 app.post("/save1", async (req, res) => {
-  if (req.isAuthenticated()) {
-    console.log(req.user.username);
-    const courseAttendance = parseFloat(req.body.courseAttendance);
+  try {
+    if (req.isAuthenticated() && req.user && req.user.username) {
+      const courseAttendance = parseFloat(req.body.courseAttendance);
 
-    if (isNaN(courseAttendance)) {
-      return res.status(400).send("Invalid attendance value");
-    }
+      if (isNaN(courseAttendance)) {
+        return res.status(400).send("Invalid attendance value");
+      }
 
-    let attendance = 0;
-    if (courseAttendance >= 80) {
-      attendance = 300;
-    } else if (courseAttendance >= 70 && courseAttendance < 80) {
-      attendance = 225;
-    } else if (courseAttendance >= 60 && courseAttendance < 70) {
-      attendance = 150;
-    } else if (courseAttendance >= 50 && courseAttendance < 60) {
-      attendance = 105;
-    } else if (courseAttendance >= 40 && courseAttendance < 50) {
-      attendance = 70;
+      let attendance = 0;
+      if (courseAttendance >= 80) {
+        attendance = 300;
+      } else if (courseAttendance >= 70 && courseAttendance < 80) {
+        attendance = 225;
+      } else if (courseAttendance >= 60 && courseAttendance < 70) {
+        attendance = 150;
+      } else if (courseAttendance >= 50 && courseAttendance < 60) {
+        attendance = 105;
+      } else if (courseAttendance >= 40 && courseAttendance < 50) {
+        attendance = 70;
+      } else {
+        attendance = 0;
+      }
+
+      let userDocument = await studBucket.findOne({ name: req.user.username });
+
+      if (!userDocument) {
+        userDocument = await studBucket.create({ name: req.user.username });
+      }
+
+      // Ensure the userDocument has the necessary properties
+      if (!userDocument.sd1) {
+        userDocument.sd1 = [];
+      }
+
+      // Update the document with the new values from sbucket1
+      const updateResult = await studBucket.updateOne(
+        { name: req.user.username },
+        {
+          $push: {
+            sd1: {
+              courseName: req.body.courseName,
+              courseAttendance: courseAttendance,
+              subTotal1: attendance
+            }
+          }
+        }
+      );
+
+      res.send("<script>alert('You data is saved Successfully'); window.location.href = '/studBucket1'; clearSelectTags();</script>");
     } else {
-      attendance = 0;
+      res.redirect("/");
     }
-
-    totalMarks = totalMarks + attendance;
-
-    const sbucket1 = {
-      name: req.user.username,
-      sd1: [{
-        courseName: req.body.courseName,
-        courseAttendance: courseAttendance,
-        subTotal1: attendance
-      }],
-      totalMarks: totalMarks
-    };
-
-    try {
-      const bucketdata = await studBucket.insertMany(sbucket1);
-      console.log(bucketdata);
-      res.send("<script>alert('You data is saved Successfully'); window.location.href = '/studBucket1'; clearSelectTags();</script>"); 
   } catch (error) {
-      console.error(error);
-  }
-
-  } else {
-    // Redirect to the home page if the user is not authenticated
-    res.redirect("/");
+    console.error("Error in /save1 route:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
+
+
 
 app.post("/save2", async (req, res) => {
   if (req.isAuthenticated()) {
@@ -352,8 +475,6 @@ app.post("/save2", async (req, res) => {
       result = 0;
     }
 
-    totalMarks = totalMarks + result;
-
     try {
       const userDocument = await studBucket.findOne({ name: req.user.username });
 
@@ -367,8 +488,7 @@ app.post("/save2", async (req, res) => {
                 courseName: req.body.courseName,
                 courseResult: courseResult,
                 subTotal2: result
-              },
-              totalMarks: totalMarks
+              }
             }
           }
         )}
@@ -382,6 +502,7 @@ app.post("/save2", async (req, res) => {
     res.redirect("/");
   }
 });
+
 
 app.post("/save3", async (req, res) => {
   if (req.isAuthenticated()) {
@@ -401,8 +522,6 @@ app.post("/save3", async (req, res) => {
 
     const total = students100 + students90_99 + students80_89 + students70_79 + students60_69 + studentsBelow60;
 
-    totalMarks = totalMarks + total;
-
     try {
       const userDocument = await studBucket.findOne({ name: req.user.username });
 
@@ -421,8 +540,7 @@ app.post("/save3", async (req, res) => {
                 noOfStudents60To69per: req.body.noOfStudents60To69per,
                 noOfStudentsBelow60per: req.body.noOfStudentsBelow60per,
                 subTotal3: total
-              },
-              totalMarks: totalMarks
+              }
             }
           }
         )}
@@ -459,8 +577,6 @@ app.post("/save4", async (req, res) => {
 
       const result = (A * courseAttendance) / 100;
 
-      totalMarks = totalMarks + result;
-
       const userDocument = await studBucket.findOne({ name: req.user.username });
 
       if (userDocument) {
@@ -474,8 +590,7 @@ app.post("/save4", async (req, res) => {
                 courseAttendance: req.body.courseAttendance,
                 studentFeedBack: req.body.studentFeedBack,
                 subTotal3: result,
-              },
-              totalMarks: totalMarks
+              }
             },
           }
         );

@@ -89,6 +89,7 @@
   
           <div class="nav-items">
             <div class="home nav-items"><a href="/index">Home</a></div>
+            <div class="approve nav-items"><a href="/approve">Approve</a></div>
           <div class="profile nav-items"><a href="#">Profile</a></div>
           <div class="profile-img nav-items"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzBXNuO6PezhC18aYH_2cYtS0I7KbxoKYdwA&usqp=CAU" onclick="toggleMenu()"></div>
           </div>
@@ -124,34 +125,18 @@
         </div>
       </nav>
 
-      <div class="wrapper">
-        <div class="content-box">
-           <div class="card">
-               <i class="bx bx-bar-chart-alt bx-md"></i>
-               <h2>Academic Involvement</h2>
-           </div>
-           <div class="card">
-               <i class='bx bx-user bx-md'></i>
-               <h2><a href="/studBucket1">Student Development</a></h2>
-           </div>
-           <div class="card">
-               <i class="bx bx-laptop bx-md"></i>
-               <h2>Administrative Bucket</h2>
-           </div>
-           <div class="card">
-               <i class="bx bx-basket bx-md"></i>
-               <h2>Research Bucket</h2>   
-           </div>
-           <div class="card">
-               <i class="bx bx-user-voice bx-md"></i>
-               <h2>Consultancy and Corporate Training Bucket</h2>   
-           </div>
-           <div class="card">
-               <i class="bx bx-cube bx-md"></i>
-               <h2>Product Development Bucket</h2>  
-           </div>
-        </div>
-    </div>
+      <h1>Faculty Members for Approval</h1>
+
+      <% if (facultyMembers && facultyMembers.length > 0) { %>
+      <ul>
+        <% facultyMembers.forEach((faculty) => { %>
+          <% const username = faculty.username; %>
+          <li><a href="/approve/submittedForms/<%=username%>"><%= faculty.name %></a></li>
+        <% }); %>
+      </ul>
+      <% } else { %>
+      <p>No faculty members found for approval.</p>
+      <% } %>
 
     <script>
       let subMenu = document.getElementById("subMenu");

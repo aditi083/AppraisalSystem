@@ -1,0 +1,41 @@
+<!-- sd1Content.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SD1 Content</title>
+</head>
+<body>
+  <h1>SD1 Content</h1>
+
+  <!-- Check if sd1 exists and has elements -->
+  <% if (user && user.sd1 && user.sd1.length > 0) { %>
+    <!-- Iterate through sd1 array -->
+    <% for(let i = 0; i < user.sd1.length; i++) { %>
+      <h3>Course Name: <%= user.sd1[i].courseName %></h3>
+      <p>Course Attendance: <%= user.sd1[i].courseAttendance %></p>
+      <p>Self Appraisal Score: <%= user.sd1[i].subTotal1 %></p>
+
+      <!-- Check if Ro score exists -->
+      <% if (user.sd1[i].reviewerScore) { %>
+        <p>Reviewer Score: <%= user.sd1[i].reviewerScore%></p>
+      <% } else { %>
+        <!-- Form to submit Ro score -->
+        <form action="/approve/submittedForms/<%= user.name %>/save" method="post">
+          <label for="sd1_reviewerScore_<%= i %>">Reviewer Score:</label>
+          <input type="text" id="sd1_reviewerScore_<%= i %>" name="sd1_reviewerScore_<%= i %>" required>
+          <input type="hidden" name="index" value="<%= i %>">
+          <button type="submit">Approve</button>
+        </form>
+      <% } %>
+    <% } %>
+  <% } else { %>
+    <!-- If sd1 is empty or not available -->
+    <p>No data available for sd1.</p>
+  <% } %>
+
+</body>
+</html>

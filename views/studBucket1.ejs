@@ -130,7 +130,9 @@
       <div class="bucket-item bucket1">
         Academic Involvement
         <div class="progress-bar">
-          <div class="progress-fill" style="width: 70%"><p>Academic Involvement</p></div>
+          <% if(locals){ %>
+          <div class="progress-fill" style="width: 60%">Academic Involvement Bucket</div>
+          <% } %>
         </div>
       </div>
   
@@ -165,7 +167,7 @@
       <div class="bucket-item bucket3">
         Product Dev. Bucket
         <div class="progress-bar">
-          <div class="progress-fill" style="width: 60%;">Product Dev. Bucket</div>
+          <div class="progress-fill" style="width: 60%;">Product Development Bucket</div>
         </div>
       </div>
     </div>
@@ -185,9 +187,9 @@
             <div class="button"><button type="submit" class="saveButton">Save</button></div>
           </form>
     </div>
-          
-     
-  </div>
+
+    
+
 
   <script>
     let subMenu = document.getElementById("subMenu");
