@@ -6,6 +6,7 @@
     <title>Faculty appraisal System</title>
     <link rel="stylesheet" href="/styles/index.css" class="css">
     <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/approve.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -125,19 +126,35 @@
         </div>
       </nav>
 
-      <h1>Faculty Members for Approval</h1>
 
-      <% if (facultyMembers && facultyMembers.length > 0) { %>
-      <ul>
-        <% facultyMembers.forEach((faculty) => { %>
-          <% const username = faculty.username; %>
-          <li><a href="/approve/submittedForms/<%=username%>"><%= faculty.name %></a></li>
-        <% }); %>
-      </ul>
-      <% } else { %>
-      <p>No faculty members found for approval.</p>
-      <% } %>
-
+      <div class="facultyMembers">
+        <h1>Faculty Members</h1>
+        <% if (facultyMembers && facultyMembers.length > 0) { %>
+        <table class="facultyTable">
+            <thead>
+                <tr class="list-name">
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% facultyMembers.forEach((faculty) => { %>
+                <% const username = faculty.username; %>
+                <tr class="list-item">
+                    <td><i class="fa-solid fa-file-contract fa-2x"></i><a href="/approve/submittedBuckets/<%=username%>"><span><%= faculty.name %></span></a></td>
+                    <td><span><%= faculty.department%></span></td>
+                    <td><span><%= faculty.designation %></span></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <% } else { %>
+        <p class="NoFaculty">No faculty members found for approval.</p>
+        <% } %>
+    </div>
+    
+      
     <script>
       let subMenu = document.getElementById("subMenu");
       let sidebar = document.querySelector('.sidebar');
@@ -145,6 +162,8 @@
       let buckets = document.querySelector('.buckets');
       let formContainer = document.querySelector('.form-container');
       let wrapper = document.querySelector('.wrapper');
+      let members = document.querySelector('.facultyMembers');
+      let table = document.querySelector('.facultyTable');
   
       function toggleMenu() {
         subMenu.classList.toggle("open-menu");
@@ -156,6 +175,8 @@
         buckets.classList.toggle('sidebar-hidden');
         formContainer.classList.toggle('sidebar-hidden');
         wrapper.classList.toggle('sidebar-hidden');
+        members.classList.toggle('sidebar-hidden');
+        table.classList.toggle('sidebar-hidden')
       } 
     </script>
   

@@ -1,0 +1,105 @@
+/* h1{
+    color: blueviolet;
+    text-align: center;
+    display: block;
+    margin-top: 50px;
+    background-color:lavender;
+}
+ul{
+    padding-right: 50px;
+}
+li{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.a{
+    margin-top: 50px;
+    display: flex;
+    margin-left: 300px;
+    margin-right: 300px;
+    border-radius: 10px;
+    border-style:solid;
+    border-color:lavender;
+    border-width: 10px;
+    padding-right: 40px;
+}
+table{
+    height:300px;
+    width: 50%;
+    margin-left: 200px;
+    margin-right: 100px;
+}
+a:hover{
+    background-color:palevioletred;
+}
+a::content{
+    background-color: aquamarine;
+    text-align: left;
+} */
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.facultyMembers {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin: 10px 25px;
+    transform: translateX(270px);
+}
+
+.facultyMembers.sidebar-hidden {
+    transform: translateX(30px);
+    transition: all 0.2s ease; 
+  }
+
+.facultyTable {
+    width: 59rem;
+    border-collapse: collapse;
+    margin-top: 20px; /* Adjust margin as needed */
+}
+.facultyTable.sidebar-hidden{
+    width: 75rem;
+}
+
+.list-name,
+.list-item {
+    background-color: #e9ecf2;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    margin: 12px 10px;
+    border-radius: 5px;
+}
+
+.list-name th,
+.list-item td {
+    padding: 10px;
+    text-align: center;
+}
+
+.list-item i {
+    color: rgb(158, 158, 158);
+    font-size: 20px;
+    text-align: center;
+    margin: 10px;
+}
+
+.list-item > a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 10px;
+}
+
+.list-item > a > span {
+    display: inline;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.list-item > a > span:last-child {
+    margin-right: 0;
+}

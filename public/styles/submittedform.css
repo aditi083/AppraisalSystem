@@ -1,0 +1,45 @@
+
+
+.container{
+    text-align: center;
+    margin-top: 100px;
+    display:grid;
+    justify-content: space-around;
+    background-color: linen;
+    height: 500px;
+    margin-left: 100px;
+    margin-right:100px;
+    border-radius: 10px;
+
+}
+
+.content2{
+    font-weight:1000;
+    background-color: bisque;
+    font-size:30px;
+    text-align:center;
+    margin-top: 10px;
+    padding-top: 20px;
+    width:500px;
+    
+
+}
+.content1{
+    background-color: bisque;
+}
+.content3{
+    font-weight:400;
+    background-color: bisque;
+    font-size: larger;
+    text-align:center;
+    margin-top: 10px;
+    padding-top: 20px;
+}
+.content4{
+    background-color: bisque;
+    font-weight:400;
+    font-size: larger;
+    text-align:center;
+    margin-top: 10px;
+    padding-top: 20px;
+}

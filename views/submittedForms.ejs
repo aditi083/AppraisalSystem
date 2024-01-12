@@ -20,17 +20,27 @@
       <p>Self Appraisal Score: <%= user.sd1[i].subTotal1 %></p>
 
       <!-- Check if Ro score exists -->
-      <% if (user.sd1[i].reviewerScore) { %>
-        <p>Reviewer Score: <%= user.sd1[i].reviewerScore%></p>
+      <% if (user.sd1[i].file) { %>
+        <!-- Display file details or provide a link to download -->
+        <p>File ID: <%= user.sd1[i].file %></p>
+        <!-- You can provide a link to download the file using the file ID -->
+        <a href="/download/<%= user.sd1[i].file %>">Download File</a>
       <% } else { %>
-        <!-- Form to submit Ro score -->
-        <form action="/approve/submittedForms/<%= user.name %>/save" method="post">
-          <label for="sd1_reviewerScore_<%= i %>">Reviewer Score:</label>
-          <input type="text" id="sd1_reviewerScore_<%= i %>" name="sd1_reviewerScore_<%= i %>" required>
-          <input type="hidden" name="index" value="<%= i %>">
-          <button type="submit">Approve</button>
-        </form>
+        <p>No file uploaded for this course.</p>
       <% } %>
+    <% } %>
+
+    
+    <% if (user.sd1[i].reviewerScore) { %>
+      <p>Reviewer Score: <%= user.sd1[i].reviewerScore%></p>
+    <% } else { %>
+      <!-- Form to submit Ro score -->
+      <form action="/approve/submittedForms/<%= user.name %>/save" method="post">
+        <label for="sd1_reviewerScore_<%= i %>">Reviewer Score:</label>
+        <input type="text" id="sd1_reviewerScore_<%= i %>" name="sd1_reviewerScore_<%= i %>" required>
+        <input type="hidden" name="index" value="<%= i %>">
+        <button type="submit">Approve</button>
+      </form>
     <% } %>
   <% } else { %>
     <!-- If sd1 is empty or not available -->

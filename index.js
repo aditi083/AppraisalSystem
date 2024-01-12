@@ -10,6 +10,8 @@ import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 import findOrCreate from 'mongoose-findorcreate';
+import { createConnection } from 'mongoose';
+
 
 const app = express();
 const port = 3000;
@@ -70,6 +72,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+
 const studentDevelopmentSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -85,11 +88,14 @@ const studentDevelopmentSchema = new mongoose.Schema({
       subTotal1: {
         type: Number,
         required: true
-      },
-      reviewerScore: {
-        type: Number
       }
   }],
+  selfAppraisalScore1:{
+    type: Number
+  },
+  reviewerScore1: {
+    type: Number
+  },
   sd2: [{
     courseName: {
       type: String
@@ -100,11 +106,14 @@ const studentDevelopmentSchema = new mongoose.Schema({
     subTotal2: {
       type: Number,
       required: true
-    },
-    reviewerScore: {
-      type: Number
     }
   }],
+  selfAppraisalScore2:{
+    type: Number
+  },
+  reviewerScore2: {
+    type: Number
+  },
   sd3: [{
     courseName: {
       type: String
@@ -130,11 +139,14 @@ const studentDevelopmentSchema = new mongoose.Schema({
     subTotal3: {
       type:Number,
       required: true
-    },
-    reviewerScore: {
-      type: Number
     }
   }],
+  selfAppraisalScore3:{
+    type: Number
+  },
+  reviewerScore3: {
+    type: Number
+  },
   sd4: [{
     courseName: {
       type: String
@@ -148,11 +160,14 @@ const studentDevelopmentSchema = new mongoose.Schema({
     subTotal4: {
       type: Number,
       required: true
-    },
-    reviewerScore: {
-      type: Number
     }
   }],
+  selfAppraisalScore4:{
+    type: Number
+  },
+  reviewerScore4: {
+    type: Number
+  },
   sd5: [{
     noOfMeetings: {
       type: Number
@@ -165,13 +180,21 @@ const studentDevelopmentSchema = new mongoose.Schema({
     },
     feedBack: {
       type: Number
-    },
-    reviewerScore: {
-      type: Number
     }
   }],
+  selfAppraisalScore5:{
+    type: Number
+  },
+  reviewerScore5: {
+    type: Number
+  },
+  totalSelfAppraisalScore: {
+    type: Number
+  },
+  totalReviewerScore: {
+    type: Number
+  }
 });
-
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
@@ -206,7 +229,11 @@ app.get("/signup", (req, res) => {
 
 app.get("/index", (req, res) => {
   res.render("index",  {name: req.user.name, email: req.user.username});
-})
+});
+
+app.get("/profile", (req, res) => {
+  res.render("profile", {name: req.user.name, email: req.user.username})
+});
 
 app.get("/studBucket1", async (req, res) => {
   try {
@@ -257,7 +284,7 @@ app.get("/approve", checkRole('ro'), async (req, res) => {
       // Fetch faculty members of the same department
       const facultyMembers = await User.find({ role: 'faculty', department: roDepartment });
 
-      res.render("approve", { facultyMembers, name: req.user.name, email: req.user.username });
+      res.render("approve", { facultyMembers, name: req.user.name, email: req.user.username, department: req.user.department, designation: req.user.designation });
     } else {
       res.redirect("/");
     }
@@ -267,19 +294,30 @@ app.get("/approve", checkRole('ro'), async (req, res) => {
   }
 });
 
-app.get("/approve/submittedForms/:name", async (req, res) => {
+app.get("/approve/StudentBucket/: name", async  (req, res) => {
   try {
-    // Retrieve the username from the request parameters
-    const { name } = req.params;
-
-    // Fetch the user or faculty based on the username from the database
+    const { name } = req.params[" name"];
     const user = await studBucket.findOne({ name });
 
     if (user) {
-      // Render a template or send data related to the user's submitted forms
-      res.render('submittedForms', { user });
+      res.render('SubmittedstudentBuckets', { user , name: req.user.name, email: req.user.username});
     } else {
-      // If the user is not found, handle accordingly (e.g., show an error message)
+      res.status(404).send('No details found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get("/approve/submittedBuckets/:name", async (req, res) => {
+  try {
+    const { name } = req.params;
+    const user = await studBucket.findOne({ name });
+
+    if (user) {
+      res.render('submittedBuckets', { user , name: req.user.name, email: req.user.username});
+    } else {
       res.status(404).send('No details found');
     }
   } catch (error) {
@@ -301,14 +339,14 @@ app.post("/approve/submittedForms/:name/save", async (req, res) => {
     }
 
     // Update the document with the new reviewerScore value
-    const updateResult = await studBucket.updateOne(
-      { name },
-      {
-        $set: {
-          [`sd1.${i}.reviewerScore`]: reviewerScoreValue
-        }
-      }
-    );
+    // const updateResult = await studBucket.updateOne(
+    //   { name },
+    //   {
+    //     $set: {
+    //       [`sd1.${i}.reviewerScore`]: reviewerScoreValue
+    //     }
+    //   }
+    // );
 
     return res.status(200).redirect(`/approve/submittedForms/${name}`);
   } catch (error) {
@@ -425,7 +463,6 @@ app.post("/save1", async (req, res) => {
         userDocument.sd1 = [];
       }
 
-      // Update the document with the new values from sbucket1
       const updateResult = await studBucket.updateOne(
         { name: req.user.username },
         {

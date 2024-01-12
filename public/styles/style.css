@@ -136,6 +136,9 @@ body {
   white-space: normal;
   margin-left: 10px; 
 }
+.name{
+  display: flex;
+}
 
 /* Responsive */
 @media screen and (max-width: 1100px) {
@@ -303,6 +306,8 @@ button{
 button:hover{
   cursor: pointer;
 }
+
+/* Navbar */
 
 nav .navbar{
   background-color: #fff;
