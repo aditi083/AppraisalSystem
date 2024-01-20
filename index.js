@@ -11,6 +11,12 @@ import mongoose from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 import findOrCreate from 'mongoose-findorcreate';
 import { createConnection } from 'mongoose';
+import multer from 'multer';
+import path from 'path';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 const app = express();
@@ -36,6 +42,18 @@ mongoose.connect("mongodb://localhost:27017/usersDB")
 .catch((err) => {
   console.error("Failed to connect to MongoDB:", err);
 });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(__dirname, 'uploads/');
+    cb(null, uploadPath); // Specify the directory where files will be stored
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -78,6 +96,9 @@ const studentDevelopmentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  reviewerScore1:{
+    type: Number
+  },
   sd1: [{
       courseName: {
         type: String,
@@ -88,12 +109,22 @@ const studentDevelopmentSchema = new mongoose.Schema({
       subTotal1: {
         type: Number,
         required: true
+      },
+      file: {
+        filename: String,
+        filepath: String,
       }
   }],
-  selfAppraisalScore1:{
-    type: Number
-  },
-  reviewerScore1: {
+  comments1: [{
+    author: String, // Author of the comment (faculty, ro)
+    content: String, // Comment content
+    role: String,
+    timestamp: {
+      type: Date,
+      default: Date.now,
+    },
+  }],
+  avgSelfAppraisalScore1:{
     type: Number
   },
   sd2: [{
@@ -108,10 +139,18 @@ const studentDevelopmentSchema = new mongoose.Schema({
       required: true
     }
   }],
-  selfAppraisalScore2:{
+  comments2: [{
+    author: String, // Author of the comment (faculty, ro)
+    content: String, // Comment content
+    timestamp: {
+      type: Date,
+      default: Date.now,
+    },
+  }],
+  avgSelfAppraisalScore2:{
     type: Number
   },
-  reviewerScore2: {
+  reviewScore2:{
     type: Number
   },
   sd3: [{
@@ -141,10 +180,10 @@ const studentDevelopmentSchema = new mongoose.Schema({
       required: true
     }
   }],
-  selfAppraisalScore3:{
+  avgSelfAppraisalScore3:{
     type: Number
   },
-  reviewerScore3: {
+  reviewScore3:{
     type: Number
   },
   sd4: [{
@@ -162,10 +201,10 @@ const studentDevelopmentSchema = new mongoose.Schema({
       required: true
     }
   }],
-  selfAppraisalScore4:{
+  avgSelfAppraisalScore4:{
     type: Number
   },
-  reviewerScore4: {
+  reviewScore4:{
     type: Number
   },
   sd5: [{
@@ -182,10 +221,10 @@ const studentDevelopmentSchema = new mongoose.Schema({
       type: Number
     }
   }],
-  selfAppraisalScore5:{
+  avgSelfAppraisalScore5:{
     type: Number
   },
-  reviewerScore5: {
+  reviewScore5:{
     type: Number
   },
   totalSelfAppraisalScore: {
@@ -231,8 +270,20 @@ app.get("/index", (req, res) => {
   res.render("index",  {name: req.user.name, email: req.user.username});
 });
 
-app.get("/profile", (req, res) => {
-  res.render("profile", {name: req.user.name, email: req.user.username})
+app.get("/profile", async (req, res) => {
+  try {
+    const userDocument = await studBucket.findOne({ name: req.user.username });
+
+    if (userDocument && userDocument.sd1 && userDocument.sd1.length > 0) {
+      const sd1Data = userDocument.sd1;
+      res.render("profile", { user: req.user, sd1Data, name: req.user.name, email: req.user.email, department: req.user.department, designation: req.user.designation, employeeCode: req.user.employeeCode });
+    } else {
+      res.render("profile", { user: req.user, sd1Data: null, name: req.user.name, email: req.user.email, department: req.user.department, designation: req.user.designation, employeeCode: req.user.employeeCode });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 app.get("/studBucket1", async (req, res) => {
@@ -267,6 +318,91 @@ app.get("/studBucket5", (req, res) => {
   res.render("studBucket5");
 });
 
+app.get("/profile/studentBuckets", (req, res) => {
+  res.render("facultySubmittedStudentB",  {name: req.user.name, email: req.user.username});
+})
+
+app.get("/profile/studentBuckets/forms1", async (req, res) => {
+  try {
+    const userDocument = await studBucket.findOne({ name: req.user.username });
+
+    if (userDocument && userDocument.sd1 && userDocument.sd1.length > 0) {
+      res.render("facultySubmittedForms1", { user: req.user, name: req.user.name, email: req.user.username, sd1: userDocument.sd1 ,avgSelfAppraisalScore1: userDocument.avgSelfAppraisalScore1, reviewerScore1: userDocument.reviewerScore1, comments1: userDocument.comments1});
+    } else {
+      res.render("facultySubmittedForms1", { user: req.user, name: req.user.name, email: req.user.username, sd1: null ,avgSelfAppraisalScore1: userDocument.avgSelfAppraisalScore1, reviewerScore1: userDocument.reviewerScore1, comments1: userDocument.comments1});
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// app.post("/profile/studentBuckets/forms1/comment", checkRole('faculty'), async (req, res) => {
+//   try {
+//     const name = req.user.name;
+//     const { commentText } = req.body;
+
+//     // Find the faculty user and update the comments array
+//     const updateResult = await studBucket.updateOne(
+//       { name: name },
+//       {
+//         $push: {
+//           comments1: {
+//             author: req.user.role, // Assuming you want to store the commenter's name
+//             text: commentText,
+//           },
+//         },
+//       }
+//     );
+//     console.log('Update result:', updateResult);
+
+//     res.redirect("/profile/studentBuckets/forms1");
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
+
+
+app.post("/profile/studentBuckets/forms1/comment", checkRole('faculty'), async (req, res) => {
+  try {
+    const username = req.user.username;
+    const { commentText } = req.body;
+
+    // Find the faculty user and update the comments array
+    const updateResult = await studBucket.updateOne(
+      { name: username },
+      {
+        $push: {
+          comments1: {
+            author: username, // Assuming you want to store the commenter's name
+            content: commentText,
+            role: req.user.role,
+            timestamp: Date.now(),
+          },
+        },
+      }
+    );
+
+    console.log('Update result:', updateResult);
+
+    // Check if a document was matched and modified
+    if (updateResult.matchedCount > 0) {
+      res.redirect("/profile/studentBuckets/forms1");
+    } else {
+      res.status(404).send('Document not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+
+
 function checkRole(role) {
   return (req, res, next) => {
     if (req.isAuthenticated() && req.user.role === role) {
@@ -294,13 +430,13 @@ app.get("/approve", checkRole('ro'), async (req, res) => {
   }
 });
 
-app.get("/approve/StudentBucket/: name", async  (req, res) => {
+app.get("/approve/StudentBucket/:name", checkRole('ro'),async (req, res) => {
   try {
-    const { name } = req.params[" name"];
+    const { name } = req.params;
     const user = await studBucket.findOne({ name });
 
     if (user) {
-      res.render('SubmittedstudentBuckets', { user , name: req.user.name, email: req.user.username});
+      res.render('SubmittedstudentBuckets', { user, name: req.user.name, email: req.user.username });
     } else {
       res.status(404).send('No details found');
     }
@@ -310,7 +446,58 @@ app.get("/approve/StudentBucket/: name", async  (req, res) => {
   }
 });
 
-app.get("/approve/submittedBuckets/:name", async (req, res) => {
+app.get("/approve/submittedformsSD1/:name", checkRole('ro'),async (req, res) => {
+  try {
+    const { name } = req.params;
+    const user = await studBucket.findOne({ name });
+
+    if (user) {
+      res.render('submittedForms', { user, name: req.user.name, email: req.user.username });
+    } else {
+      res.status(404).send('No details found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.post("/approve/submittedformsSD1/:name/comment", checkRole('ro'), async (req, res) => {
+  try {
+    const { name } = req.params;
+    const {commentText} = req.body;
+    const user = await studBucket.findOne({ name });
+    // Find the faculty user and update the comments array
+    const updateResult = await studBucket.updateOne(
+      { name: name },
+      {
+        $push: {
+          comments1: {
+            author: req.user.name, // Assuming you want to store the commenter's name
+            content: commentText,
+            role: req.user.role,
+            timestamp: Date.now(),
+          },
+        },
+      }
+    );
+
+    console.log('Update result:', updateResult);
+
+    // Check if a document was matched and modified
+    if (updateResult.matchedCount > 0) {
+      res.redirect(`/approve/submittedformsSD1/${name}`);
+    } else {
+      res.status(404).send('Document not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+app.get("/approve/submittedBuckets/:name", checkRole('ro'),async (req, res) => {
   try {
     const { name } = req.params;
     const user = await studBucket.findOne({ name });
@@ -326,44 +513,63 @@ app.get("/approve/submittedBuckets/:name", async (req, res) => {
   }
 });
 
-// POST method for handling Ro scores
-app.post("/approve/submittedForms/:name/save", async (req, res) => {
+app.get("/evidence/:name/:filename", checkRole('ro'),(req, res) => {
+  const { name, filename } = req.params;
+  const filePath = path.join(__dirname, 'uploads', filename);
+
+  // Use res.sendFile to send the file to the client
+  res.sendFile(filePath);
+});
+
+
+app.post("/approve/submittedForms/:name/save", checkRole('ro'),async (req, res) => {
   try {
     const { name } = req.params;
-    const i = req.body.index; // Access the dynamically generated i value
-
-    const reviewerScoreValue = parseFloat(req.body[`sd1_reviewerScore_${i}`]);
+    const reviewerScoreValue = parseFloat(req.body.reviewerScore1);
 
     if (isNaN(reviewerScoreValue)) {
       return res.status(400).send('Invalid reviewer score value');
     }
 
-    // Update the document with the new reviewerScore value
-    // const updateResult = await studBucket.updateOne(
-    //   { name },
-    //   {
-    //     $set: {
-    //       [`sd1.${i}.reviewerScore`]: reviewerScoreValue
-    //     }
-    //   }
-    // );
+    let userDocument = await studBucket.findOne({ name: name });
 
-    return res.status(200).redirect(`/approve/submittedForms/${name}`);
+    if (!userDocument) {
+      userDocument = await studBucket.create({ name: name });
+    }
+
+    // Check if reviewerScore1 exists, if not, create it; otherwise, update it
+    if (userDocument.reviewerScore1 === undefined) {
+      const createReviewerScoreResult = await studBucket.updateOne(
+        { name: name },
+        {
+          $set: {
+            reviewerScore1: reviewerScoreValue,
+          },
+        }
+      );
+    } else {
+      const updateReviewerScoreResult = await studBucket.updateOne(
+        { name: name },
+        {
+          $set: {
+            reviewerScore1: reviewerScoreValue,
+          },
+        }
+      );
+    }
+
+    res.status(200).redirect(`/approve/submittedForms/${name}`);
   } catch (error) {
     console.error(error);
     return res.status(500).send('Internal Server Error');
   }
 });
 
-
-
-
-
 app.get("/ro-home", checkRole('ro'), (req, res) => {
   res.render("ro-home", { name: req.user.name, email: req.user.username });
 });
 
-app.get("/approve", async (req, res) => {
+app.get("/approve", checkRole('ro'), async (req, res) => {
   try {
     if (req.isAuthenticated() && req.user.role === 'ro') {
       const roDepartment = req.user.department;
@@ -428,10 +634,11 @@ app.post("/signin", function(req, res){
 
 let totalMarks = 0;
 
-app.post("/save1", async (req, res) => {
+app.post("/save1", upload.single('file'), async (req, res) => {
   try {
     if (req.isAuthenticated() && req.user && req.user.username) {
       const courseAttendance = parseFloat(req.body.courseAttendance);
+      const file = req.file;
 
       if (isNaN(courseAttendance)) {
         return res.status(400).send("Invalid attendance value");
@@ -463,20 +670,47 @@ app.post("/save1", async (req, res) => {
         userDocument.sd1 = [];
       }
 
-      const updateResult = await studBucket.updateOne(
-        { name: req.user.username },
-        {
-          $push: {
-            sd1: {
-              courseName: req.body.courseName,
-              courseAttendance: courseAttendance,
-              subTotal1: attendance
-            }
+      if (file) {
+        const updateResult = await studBucket.updateOne(
+          { name: req.user.username },
+          {
+            $push: {
+              sd1: {
+                courseName: req.body.courseName,
+                courseAttendance: courseAttendance,
+                subTotal1: attendance,
+                file: {
+                  filename: file.filename,
+                  filepath: file.path,
+                },
+              },
+            },
           }
-        }
-      );
+        );
 
-      res.send("<script>alert('You data is saved Successfully'); window.location.href = '/studBucket1'; clearSelectTags();</script>");
+        let avgSubTotal1 = 0;
+
+      // Calculate the average of all subTotal1 values
+      if (userDocument.sd1.length > 0) {
+        avgSubTotal1 = userDocument.sd1.reduce((total, sd) => total + sd.subTotal1, 0) / userDocument.sd1.length;
+      }
+
+        const updateAvgScoreResult = await studBucket.updateOne(
+          { name: req.user.username },
+          {
+            $set: {
+              avgSelfAppraisalScore1: avgSubTotal1,
+            },
+          }
+        );
+
+  
+        // Add return statement here
+        return res.send("<script>alert('You data is saved Successfully'); window.location.href = '/studBucket1'; clearSelectTags();</script>");
+      } else {
+        // Removed the return statement here
+        res.status(500).send("file not found");
+      }
     } else {
       res.redirect("/");
     }
@@ -485,6 +719,7 @@ app.post("/save1", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 
 

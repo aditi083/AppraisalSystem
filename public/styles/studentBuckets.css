@@ -78,7 +78,8 @@ body {
     border:4px solid #193688 ;
 }
 
-p {
+a {
+    text-decoration: none;
     color: white;
     text-align: center;
     margin: 0;

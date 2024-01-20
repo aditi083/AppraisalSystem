@@ -24,6 +24,7 @@ body {
 .details{
   display: flex;
   flex-direction: column;
+  gap: 30px;
   align-items: flex-start;
   height: 900px;
   background-color:white;
@@ -37,6 +38,7 @@ body {
  
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   width: 1400px;
   height: 350px;
@@ -46,13 +48,13 @@ body {
   box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2); */
 }
 
-.details-card-photo {
+/* .details-card-photo {
   border-radius: 50%;
   margin-left: 100px;
   margin-right: 100px;
   height: 250px;
   width: 300px;
-}
+} */
 
 .details-card-content{
   display: flex;
@@ -93,6 +95,7 @@ body {
 .details-buckets{
   display: flex;
   flex-direction: column;
+  gap: 30px;
   width: 1400px;
   justify-content: space-evenly;
   height: 350px;
@@ -119,10 +122,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 10px;
   border-radius: 30px;
   color: white;
-  width: 200px;
-  height: 100px;
+  width: 400px;
+  height: 200px;
   background-color: blue;
 }
 
@@ -132,6 +136,7 @@ body {
   justify-content: center;
   height: 100px;
   width: 1400px;
+  margin-top: 30px;
 }
 
 .print-button{

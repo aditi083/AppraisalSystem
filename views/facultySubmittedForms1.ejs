@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SD1 Content</title>
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="navbar">
+      <div class="bar-icon">
+        <i class="fa-solid fa-bars" onclick="toggleSidebar()"></i>
+      </div>
+
+      <div class="nav-items">
+        <div class="home nav-items"><a href="/index">Home</a></div>
+        <div class="approve nav-items"><a href="/approve">Approve</a></div>
+      <div class="profile nav-items"><a href="#">Profile</a></div>
+      <div class="profile-img nav-items"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzBXNuO6PezhC18aYH_2cYtS0I7KbxoKYdwA&usqp=CAU" onclick="toggleMenu()"></div>
+      </div>
+
+      <div class="sub-menu-wrap" id="subMenu">
+        <div class="sub-menu">
+          <div class="user-info">
+            <img src="/images/user.png">
+            <% if(locals){%>
+              <h3><%= name %></h3>
+              <% } %>
+          </div>
+          <hr>
+          <a href="profile" class="sub-menu-link">
+            <img src="/images/profile.jpg">
+            <p>Edit Profile</p>
+            <span>></span>
+          </a>
+
+          <a href="profile" class="sub-menu-link">
+            <img src="/images/setting.png">
+            <p>Settings</p>
+            <span>></span>
+          </a>
+
+          <a href="/logout" class="sub-menu-link">
+            <img src="/images/logout.png">
+            <p>Log Out</p>
+            <span>></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <h1>SD1 Content</h1>
+
+  <!-- Check if sd1 exists and has elements -->
+  <% if (user && sd1 && sd1.length > 0) { %>
+    <!-- Iterate through sd1 array -->
+    <% for (let i = 0; i < sd1.length; i++) { %>
+      <h3><%= i+1 %>. Course Name: <%= sd1[i].courseName %></h3>
+      <p>Course Attendance: <%= sd1[i].courseAttendance %>%</p>
+      <p>Uploaded Evidence: <a href="/evidence/<%= name %>/<%= sd1[i].file.filename %>" target="_blank">View Evidence</a></p>
+    <% } %>
+
+    <% if(avgSelfAppraisalScore1) {%>
+      <p>Self Appraisal Score (Avg Marks): <%= avgSelfAppraisalScore1 %></p>
+    <% } %>
+
+    <% if(reviewerScore1) { %>
+      <p>ReviewScore: <%= reviewerScore1 %></p>
+    <% } else { %>
+        <p>ReviewScore: --</p>
+    <% } %>
+    
+  <% } else { %>
+    <!-- If sd1 is empty or not available -->
+    <p>No data available for sd1.</p>
+  <% } %>
+
+  <!-- Add the following section for comments -->
+<h2>Comments</h2>
+<% if (comments1 && comments1.length > 0) { %>
+  <ul>
+    <% for (let comment of comments1) { %>
+      <li><strong><%= comment.author %>:</strong> <%= comment.content %></li>
+    <% } %>
+  </ul>
+<% } else { %>
+  <p>No comments available.</p>
+<% } %>
+
+<form action="/profile/studentBuckets/forms1/comment" method="post">
+  <label for="commentText">Leave a comment:</label>
+  <textarea id="commentText" name="commentText" rows="4" required></textarea>
+  <button type="submit">Submit Comment</button>
+</form>
+
+
+  <script>
+    let subMenu = document.getElementById("subMenu");
+    let sidebar = document.querySelector('.sidebar');
+    let classIcon = document.querySelector('.bar-icon');
+    let buckets = document.querySelector('.buckets');
+    let formContainer = document.querySelector('.form-container');
+    let wrapper = document.querySelector('.wrapper');
+
+    function toggleMenu() {
+      subMenu.classList.toggle("open-menu");
+    }
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('sidebar-hidden');
+      classIcon.classList.toggle('sidebar-hidden');
+      buckets.classList.toggle('sidebar-hidden');
+      formContainer.classList.toggle('sidebar-hidden');
+      wrapper.classList.toggle('sidebar-hidden');
+    } 
+  </script>
+
+</body>
+</html>
