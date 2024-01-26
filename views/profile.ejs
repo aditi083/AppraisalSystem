@@ -134,9 +134,7 @@
       
 
       <div class="details-card">
-        <!-- <img class="details-card-photo" src="images/profile1.jpg" alt="logo_img"/ > -->
-    
-
+      
         <div class="details-card-content">
 
           <div class="details-card-content-info">
@@ -162,30 +160,27 @@
 
       <div class="details-buckets">
         <div class="bucketRow1">
-          <div class="bucket sd1"><h2>Academic Involvement</h2><p>Score:</p></div>
-          <div class="bucket sd2"><a href="/profile/studentBuckets"><h2>Student Development</h2><p>Score:</p></a></div>
-          <div class="bucket sd3"><h2>Administrative Bucket</h2><p>Score:</p></div>
+          <div class="bucket sd1"><h2>Academic Involvement</h2></div>
+          <div class="bucket sd2"><a href="/profile/studentBuckets"><h2>Student Development</h2></a></div>
+          <div class="bucket sd3"><h2>Administrative Bucket</h2></div>
         </div>
 
         <div class="bucketRow2">
-          <div class="bucket sd4"><h2>Research Bucket</h2><p>Score: </p></div>
-          <div class="bucket sd5"><h2>Consultancy and Corporate Training Bucket</h2><p>Score:</p></div>
-          <div class="bucket sd6"><h2>Product Development Bucket</h2><p>Score:</p></div>
+          <div class="bucket sd4"><h2>Research Bucket</h2></div>
+          <div class="bucket sd5"><h2>Consultancy and Corporate Training Bucket</h2></div>
+          <div class="bucket sd6"><h2>Product Development Bucket</h2></div>
         </div>
 
       </div>
 
       <div class="print">
       <button type="button" class="print-button" id="printButton">
-        <h3>PRINT</h3>
+        <a href="/profile/reportDownload">Download Report</a>
       </button>
     </div>
     </div>
   </main>
 
-
-
- 
 
   <script>
     let subMenu = document.getElementById("subMenu");
@@ -205,21 +200,6 @@
       formContainer.classList.toggle('sidebar-hidden');
     } 
 
-    document.getElementById("printButton").addEventListener("click", function () {
-        // Get the content to be included in the PDF
-        const content = document.querySelector(".main-container");
-
-        // Use html2pdf to generate the PDF
-        html2pdf(content, {
-          margin: 10,
-          filename: "student_development_data.pdf",
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-          pagebreak: { mode: ['avoid-all'] }, // Avoid page breaks within elements
-          table: { fontSize: 10, autoSize: true }
-        });
-      });
   </script>
 </body>
 </html>

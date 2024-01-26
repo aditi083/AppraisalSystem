@@ -81,8 +81,8 @@
         </div>
 
         <div class="nav-items">
-          <div class="home nav-items">Home</div>
-        <div class="profile nav-items">Profile</div>
+          <div class="home nav-items"><a href="/index">Home</a></div>
+          <div class="profile nav-items"><a href="/profile">Profile</a></div>
         <div class="profile-img nav-items"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzBXNuO6PezhC18aYH_2cYtS0I7KbxoKYdwA&usqp=CAU" onclick="toggleMenu()"></div>
         </div>
 
@@ -140,6 +140,11 @@
         <div class="criteria">
           <label for="course-attendance">Course Attendance % (only write no, without %)</label>
           <input type="number" placeholder="Enter Attendance %" name="courseAttendance">
+        </div>
+
+        <div class="criteria">
+          <label for="file">Upload Evidence</label>
+          <input type="file" name="file" accept=".pdf, .jpg, .jpeg, .png" />
         </div>
      
         <div class="button"><button class="saveButton">Save</button></div>

@@ -64,7 +64,7 @@ body {
 
 .details-card-content-info{
   display: flex;
-  width: 800px;
+  width: 700px;
   margin-top: 10px;
   height: 50px;
 }
@@ -75,9 +75,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: blue;
+  background-color:  #1e6bd6;
   width: 400px;
   height: 50px;
+ 
 }
 .info-child2{
   border: solid;
@@ -87,7 +88,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
+  width: 500px;
   height: 50px;
 }
 
@@ -106,7 +107,6 @@ body {
   justify-content: center;
   align-items: center;
   justify-content: space-evenly;
-
 }
 
 .bucketRow2{
@@ -125,11 +125,38 @@ body {
   padding: 10px;
   border-radius: 30px;
   color: white;
-  width: 400px;
+  width: 350px;
   height: 200px;
-  background-color: blue;
+  background-color: #1e6bd6;
+  
 }
 
+.bucket h2{
+  
+  color: white; /* Example color, you can change this */
+  font-size: 20px; /* Example font size, you can change this */
+  font-weight: bold; 
+}
+.bucket p {
+  /* Your styles for the p element within elements with class 'bucket' go here */
+  color: aqua; /* Example color, you can change this */
+  font-size: 16px;
+  
+}
+
+.bucket{
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Optional: Align items at the center horizontally */
+}
+
+.bucket h2 {
+  order: -1; /* Set a negative order to move it above the default order (which is 0) */
+}
+
+a{
+  text-decoration: none;
+}
 
 .print{
   display: flex;

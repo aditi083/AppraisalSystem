@@ -52,25 +52,28 @@
     </div>
   </nav>
 
-  <h1>SD1 Content</h1>
+  <h1>SD3 Content</h1>
 <div class="submittedForms">
   <!-- Check if sd1 exists and has elements -->
-  <% if (user && sd1 && sd1.length > 0) { %>
+  <% if (user && sd3 && sd3.length > 0) { %>
     <!-- Iterate through sd1 array -->
-    <% for (let i = 0; i < sd1.length; i++) { %>
-      <h3><%= i+1 %>. Course Name: <%= sd1[i].courseName %></h3>
-      <p>Course Attendance: <%= sd1[i].courseAttendance %>%</p>
-      <p>Uploaded Evidence: <a href="/evidence/<%= name %>/<%= sd1[i].file.filename %>" target="_blank">View Evidence</a></p>
+    <% for (let i = 0; i < sd3.length; i++) { %>
+      <h3><%= i+1 %>. Course Name: <%= sd3[i].courseName %></h3>
+      <p>No. of students having marks 100%: <%= sd3[i].noOfStudents100per %></p>
+      <p>No. of students having marks 90% - 99%: <%= sd3[i].noOfStudents90To99per %></p>
+      <p>No. of students having marks 80% - 89%: <%= sd3[i].noOfStudents80To89per %></p>
+      <p>No. of students having marks 70% - 79%: <%= sd3[i].noOfStudents70To79per %></p>
+      <p>No. of students having marks 60% - 69%: <%= sd3[i].noOfStudents60To69per %></p>
+      <p>No. of students having marks below 60%: <%= sd3[i].noOfStudentsBelow60per %></p>
+      <p>Uploaded Evidence: <a href="/evidence/<%= name %>/<%= sd3[i].file.filename %>" target="_blank">View Evidence</a></p>
     <% } %>
 
-    <div class="selfscore">
-      <% if(avgSelfAppraisalScore1) {%>
-        <p>Self Appraisal Score (Avg Marks): <%= avgSelfAppraisalScore1 %></p>
-      <% } %>
-    </div>
+    <% if(avgSelfAppraisalScore3) {%>
+      <p>Self Appraisal Score (Avg Marks): <%= avgSelfAppraisalScore3 %></p>
+    <% } %>
 
-    <% if(reviewerScore1) { %>
-      <p>ReviewScore: <%= reviewerScore1 %></p>
+    <% if(reviewerScore3) { %>
+      <p>ReviewScore: <%= reviewerScore3 %></p>
     <% } else { %>
         <p>ReviewScore: --</p>
     <% } %>
@@ -80,10 +83,10 @@
   <% } %>
 </div>
 <div class="comments">
-<h3>Comments</h3>
-<% if (comments1 && comments1.length > 0) { %>
+<h2>Comments</h2>
+<% if (comments3 && comments3.length > 0) { %>
   <ul>
-    <% for (let comment of comments1) { %>
+    <% for (let comment of comments3) { %>
       <li><strong><%= comment.author %>:</strong> <%= comment.content %></li>
     <% } %>
   </ul>
@@ -91,7 +94,7 @@
   <p>No comments available.</p>
 <% } %>
 
-<form action="/profile/studentBuckets/forms1/comment" method="post">
+<form action="/profile/studentBuckets/forms3/comment" method="post">
   <label for="commentText">Leave a comment:</label>
   <textarea id="commentText" name="commentText" rows="4" required></textarea>
   <button type="submit">Submit Comment</button>

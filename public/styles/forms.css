@@ -1,0 +1,52 @@
+/* submitted form */
+.submittedForms{
+    margin-left:80px;
+  }
+  
+  .submittedForms input{
+    width:200px;
+  }
+  
+  .submittedForms button{
+    background-color: #4a849c;
+    padding: 7px;
+    border-radius: 8px;
+    color: black;
+    font-size: 0.9rem;
+    margin: 8px;
+  }
+  
+  .submittedForms a{
+    text-decoration: none;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
+  }
+  
+  .submittedForms a:hover{
+    color:#007bff;
+  } 
+  
+  .submittedForms label{
+    font-family: sans-serif;
+    font-style: italic;
+    font-size:18px;
+    color:#085cbd;
+    padding-top: 5px;
+  }
+  
+  .submittedForms .selfscore{
+    padding-top:10px;
+    font-size: 16px;
+    font-style:normal;
+    color:#0740b3;
+  }
+  
+  .comments{
+    padding-left: 40px;
+    background-color: #d4dff1;
+  }
+  
+  .comments textarea{
+    width:400px;
+    display: block;
+  }

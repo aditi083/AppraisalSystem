@@ -7,6 +7,25 @@
     <title>Hoverable Sidebar Menu HTML CSS & JavaScript</title>
     <link rel="stylesheet" href="/styles/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      .criteria input[type="checkbox"] {
+        transform: scale(0.8); /* Adjust the scale factor as needed to make the checkbox smaller */
+        margin-right: 5px; /* Add some space between the checkbox and text */
+      }
+    
+      .criteria label.activity {
+        display: inline-block;
+      }
+
+      .checkbox{
+        width: 30px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        padding: 0px;
+        box-shadow: 0 0 0 white;
+        border-color: white;
+      }
+    </style>
     
   </head>
   <body>
@@ -79,8 +98,8 @@
         </div>
 
         <div class="nav-items">
-          <div class="home nav-items">Home</div>
-        <div class="profile nav-items">Profile</div>
+          <div class="home nav-items"><a href="/index">Home</a></div>
+        <div class="profile nav-items"><a href="/profile">Profile</a></div>
         <div class="profile-img nav-items"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzBXNuO6PezhC18aYH_2cYtS0I7KbxoKYdwA&usqp=CAU" onclick="toggleMenu()"></div>
         </div>
 
@@ -141,7 +160,14 @@
             </select>
         </div>
         <div class="criteria"><p>Professional and Personal Development of Mentee:</p>
-          
+          <input type="checkbox" id="activity1" name="activity1" class="checkbox">
+        <label for="activity1" class="activity">A1-SWOC analysis and mentoring</label><br>
+        <input type="checkbox" id="activity2" name="activity2" class="checkbox">
+        <label for="activity2" class="activity">A2-Defining student specific goals and tracking if the student sticks to these goals or the goals are changed</label><br>
+        <input type="checkbox" id="activity3" name="activity3" class="checkbox">
+        <label for="activity3" class="activity">A3-Relevant VAC chosen by mentee on advice of Mentor</label><br>
+        <input type="checkbox" id="activity4" name="activity4" class="checkbox">
+        <label for="activity4" class="activity">A4-Rapport with Family(Home Visit/Engaging with Parent/s etc)</label><br>  
         </div>
         <div class="criteria"><p>Feedback from Final Year student (based on 3 years of Mentoring)</p>
             <select name="selectedOption4" class="option-list" id="select4" required>
@@ -151,6 +177,11 @@
                 <option value="3" required>2.5 to 3</option>
                 <option value="4" required>Below 2.5</option>
             </select>
+        </div>
+
+        <div class="criteria">
+          <label for="file">Upload Evidence</label>
+          <input type="file" name="file" accept=".pdf, .jpg, .jpeg, .png" />
         </div>
      
         <div class="button"><button class="saveButton">Save</button></div>

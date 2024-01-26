@@ -81,8 +81,8 @@
         </div>
 
         <div class="nav-items">
-          <div class="home nav-items">Home</div>
-        <div class="profile nav-items">Profile</div>
+        <div class="home nav-items"><a href="/index">Home</a></div>
+        <div class="profile nav-items"><a href="/profile">Profile</a></div>
         <div class="profile-img nav-items"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzBXNuO6PezhC18aYH_2cYtS0I7KbxoKYdwA&usqp=CAU" onclick="toggleMenu()"></div>
         </div>
 
@@ -129,46 +129,26 @@
     <div class="buckets">
       <div class="bucket-item bucket1">
         Academic Involvement
-        <div class="progress-bar">
-          <% if(locals){ %>
-          <div class="progress-fill" style="width: 60%">Academic Involvement Bucket</div>
-          <% } %>
-        </div>
       </div>
   
       <div class="bucket-item bucket2">
         Student Development
-        <div class="progress-bar">
-          <div class="progress-fill">Student Development</div> 
-        </div>
       </div>
   
       <div class="bucket-item bucket3">
         Administrative Bucket
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 60%;">Administrative Bucket</div>
-        </div>
       </div>
 
       <div class="bucket-item bucket3">
         Research Bucket
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 60%;">Research Bucket</div>
-        </div>
       </div>
 
       <div class="bucket-item bucket3">
         Consultancy and Corporate Training Bucket
-        <div class="progress-bar">
-          <div class="progress-fill" style="width:60%; ">Consultancy and Corporate Training Bucket</div>
-        </div>
       </div>
 
       <div class="bucket-item bucket3">
         Product Dev. Bucket
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: 60%;">Product Development Bucket</div>
-        </div>
       </div>
     </div>
 
@@ -185,9 +165,8 @@
             </div>
 
             <div class="criteria">
-              <label for="file">Upload File</label>
+              <label for="file">Upload Evidence</label>
               <input type="file" name="file" accept=".pdf, .jpg, .jpeg, .png" />
-              <!-- The 'accept' attribute restricts the file types that can be selected. Modify it according to your requirements. -->
             </div>
     
          

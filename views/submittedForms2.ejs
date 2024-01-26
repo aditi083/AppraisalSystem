@@ -17,7 +17,8 @@
 
       <div class="nav-items">
         <div class="home nav-items"><a href="/index">Home</a></div>
-      <div class="profile nav-items"><a href="/profile">Profile</a></div>
+        <div class="approve nav-items"><a href="/approve">Approve</a></div>
+      <div class="profile nav-items"><a href="#">Profile</a></div>
       <div class="profile-img nav-items"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzBXNuO6PezhC18aYH_2cYtS0I7KbxoKYdwA&usqp=CAU" onclick="toggleMenu()"></div>
       </div>
 
@@ -52,38 +53,39 @@
     </div>
   </nav>
 
-  <h1>SD1 Content</h1>
-<div class="submittedForms">
+  <h1>SD2 Content</h1>
+
   <!-- Check if sd1 exists and has elements -->
-  <% if (user && sd1 && sd1.length > 0) { %>
+  <% if (user && user.sd2 && user.sd2.length > 0) { %>
     <!-- Iterate through sd1 array -->
-    <% for (let i = 0; i < sd1.length; i++) { %>
-      <h3><%= i+1 %>. Course Name: <%= sd1[i].courseName %></h3>
-      <p>Course Attendance: <%= sd1[i].courseAttendance %>%</p>
-      <p>Uploaded Evidence: <a href="/evidence/<%= name %>/<%= sd1[i].file.filename %>" target="_blank">View Evidence</a></p>
+    <% for (let i = 0; i < user.sd2.length; i++) { %>
+      <h3><%= i+1 %>. Course Name: <%= user.sd2[i].courseName %></h3>
+      <p>Course Result: <%= user.sd2[i].courseResult %>%</p>
+      <p>Uploaded Evidence: <a href="/evidence/<%= user.name %>/<%= user.sd2[i].file.filename %>" target="_blank">View Evidence</a></p>
     <% } %>
 
-    <div class="selfscore">
-      <% if(avgSelfAppraisalScore1) {%>
-        <p>Self Appraisal Score (Avg Marks): <%= avgSelfAppraisalScore1 %></p>
-      <% } %>
-    </div>
+    <% if(user.avgSelfAppraisalScore2) {%>
+      <p>Self Appraisal Score (Avg Marks): <%= user.avgSelfAppraisalScore2 %></p>
+    <% } %>
 
-    <% if(reviewerScore1) { %>
-      <p>ReviewScore: <%= reviewerScore1 %></p>
+    <% if(user.reviewerScore2) { %>
+      <p>ReviewScore: <%= user.reviewerScore2 %></p>
     <% } else { %>
-        <p>ReviewScore: --</p>
+        <form action="/approve/submittedFormsSD2/<%= user.name %>/save" method="post">
+          <label for="sd1_reviewerScore1">Reviewer Score:</label>
+          <input type="text" id="sd1_reviewerScore1" name="reviewerScore1" required>
+          <button type="submit">Approve</button>
+        </form>
     <% } %>
     
   <% } else { %>
     <p>No data available for sd1.</p>
   <% } %>
-</div>
-<div class="comments">
-<h3>Comments</h3>
-<% if (comments1 && comments1.length > 0) { %>
+
+<h2>Comments</h2>
+<% if (user.comments2 && user.comments2.length > 0) { %>
   <ul>
-    <% for (let comment of comments1) { %>
+    <% for (let comment of user.comments2) { %>
       <li><strong><%= comment.author %>:</strong> <%= comment.content %></li>
     <% } %>
   </ul>
@@ -91,13 +93,13 @@
   <p>No comments available.</p>
 <% } %>
 
-<form action="/profile/studentBuckets/forms1/comment" method="post">
+<form action="/approve/submittedformsSD2/<%= user.name %>/comment" method="post">
   <label for="commentText">Leave a comment:</label>
   <textarea id="commentText" name="commentText" rows="4" required></textarea>
   <button type="submit">Submit Comment</button>
 </form>
 
-</div>
+
   <script>
     let subMenu = document.getElementById("subMenu");
     let sidebar = document.querySelector('.sidebar');

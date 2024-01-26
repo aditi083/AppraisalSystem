@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 90%; /* Set the width of the table as needed */
+            margin: 20px; /* Add margin for better appearance */
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        td{
+            font-size: 20px;
+
+        }
+
+        th {
+            font-size: 25px;
+            background-color: #f2f2f2;
+        }
+
+        h2{
+            margin: 50px;
+        }
+    </style>
+</head>
+<body>
+    <% if(users){ %>
+    <h2>Name: <%= name %></h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Category No.</th>
+                <th>Parameter</th>
+                <th>Marks</th>
+                <th>Max Marks</th>
+                <th>Self Appraisal</th>
+                <th>Review By Ro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="6">Student Development</td>
+                <td>SD-1</td>
+                <td>Average student attendance</td>
+                <td>300</td>
+                <td>300</td>
+                <td><%= users.avgSelfAppraisalScore1 %></td>
+                <td><%= users.reviewScore1 %></td>
+            </tr>
+            <tr>
+                <td>SD-2</td>
+                <td>Course Result</td>
+                <td>700</td>
+                <td>700</td>
+                <td><%= users.avgSelfAppraisalScore2 %></td>
+                <td><%= users.reviewScore2 %></td>
+            </tr>
+            <tr>
+                <td>SD-3</td>
+                <td>Topper Marks</td>
+                <td>500</td>
+                <td>500</td>
+                <td><%= users.avgSelfAppraisalScore3 %></td>
+                <td><%= users.reviewScore3 %></td>
+            </tr>
+            <tr>
+                <td>SD-4</td>
+                <td>Student Feedback</td>
+                <td>300</td>
+                <td>300</td>
+                <td><%= users.avgSelfAppraisalScore4 %></td>
+                <td><%= users.reviewScore4 %></td>
+            </tr>
+            <tr>
+                <td>SD-5</td>
+                <td>Mentoring</td>
+                <td>200</td>
+                <td>1000</td>
+                <td><%= users.avgSelfAppraisalScore5 %></td>
+                <td><%= users.reviewScore5 %></td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td></td>
+                <td>2000</td>
+                <td>2800</td>
+                <td><%= users.totalSelfAppraisalScore %></td>
+                <td><%= users.totalReviewerScore %></td>
+            </tr>
+        </tbody>
+    </table>
+    <% } %>
+</body>
+</html>
